@@ -46,13 +46,33 @@ public class AppRunner implements CommandLineRunner {
 
     @Transactional
     public void deletePlayer() {
-        Scanner scanner = new Scanner(System.in);
+        /*Scanner scanner = new Scanner(System.in);
         List<Player> players = playerService.findAll();
         System.out.println("Wybierz zawodnika (1-" + players.size() + ")");
         printPlayers();
         int playerNumber = scanner.nextInt();
 
-        playerService.deleteById(players.get(playerNumber-1).getId());
+        playerService.deleteById(players.get(playerNumber-1).getId());*/
+
+        Scanner scanner = new Scanner(System.in);
+        List<Nationality> nationalities = nationalityService.findAll();
+        System.out.println("Wybierz narodowosc (1-" + nationalities.size() + ")");
+        printNationalities();
+        int nationalityNumber = scanner.nextInt();
+
+        Nationality nationality = nationalities.get(nationalityNumber-1);
+
+        List<Player> players = nationality.getPlayerList();
+        System.out.println();
+        System.out.println("Wybierz zawodnika (1-" + players.size() + ")");
+        printPlayers(players);
+
+        int playerNumber = scanner.nextInt();
+
+        Player player = players.get(playerNumber-1);
+        playerService.deleteById(player.getId());
+        nationality.getPlayerList().remove(player);
+
     }
 
     @Transactional
@@ -103,6 +123,14 @@ public class AppRunner implements CommandLineRunner {
     private void printPlayers() {
         int i = 1;
         for(Player p : playerService.findAll()){
+            System.out.println(i + ") " + p);
+            i++;
+        }
+    }
+
+    private void printPlayers(List<Player> players) {
+        int i = 1;
+        for(Player p : players){
             System.out.println(i + ") " + p);
             i++;
         }

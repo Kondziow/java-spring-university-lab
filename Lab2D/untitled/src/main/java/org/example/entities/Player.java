@@ -20,7 +20,7 @@ public class Player implements Comparable<Player>{
     private String name;
     private int abilities;
 
-    @ManyToOne //(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "nationality_id")
     @ToString.Exclude
     private Nationality nationality;
