@@ -26,7 +26,7 @@ public class Nationality implements Comparable<Nationality> {
     @Builder.Default
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "nationality", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "nationality", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     List<Player> playerList = new ArrayList<>();
 
     @Override

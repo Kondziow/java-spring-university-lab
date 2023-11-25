@@ -10,6 +10,6 @@ public interface PlayerService {
     PlayerDTO save(PlayerDTO player);
     List<PlayerDTO > findAll();
     Optional<PlayerDTO> findById(UUID id);
-    void updateById(UUID id, PlayerDTO player);
+    boolean updateById(UUID id, PlayerDTO player);
     boolean deleteById(UUID id);
 }

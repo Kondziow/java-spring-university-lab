@@ -23,7 +23,9 @@ public class PlayerController {
 
     @PutMapping(PLAYER_PATH_ID)
     public ResponseEntity<Void> updatePlayerById(@PathVariable("customerId")UUID id, @RequestBody PlayerDTO player) {
-        playerService.updateById(id, player);
+        if(!playerService.updateById(id, player)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -45,7 +47,6 @@ public class PlayerController {
     @GetMapping(PLAYER_PATH_ID)
     public ResponseEntity<GetPlayerResponse> getPlayerById(@PathVariable("customerId") UUID id) {
         return ResponseEntity.ok(playerService.findById(id)
-                //.map(playerMapper::playerDtoToPlayer)
                 .map(playerMapper::playerDtoToGetPlayerResponse)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }

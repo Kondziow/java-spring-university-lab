@@ -1,12 +1,14 @@
 package com.example.Lab3D.services;
 
-import com.example.Lab3D.entities.Player;
 import com.example.Lab3D.mappers.NationalityMapper;
 import com.example.Lab3D.mappers.PlayerMapper;
 import com.example.Lab3D.model.dto.PlayerDTO;
+import com.example.Lab3D.repositories.NationalityRepository;
 import com.example.Lab3D.repositories.PlayerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,8 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
     private final NationalityMapper nationalityMapper;
+
+    private final NationalityRepository nationalityRepository;
 
     @Override
     public PlayerDTO save(PlayerDTO player) {
@@ -39,9 +43,14 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void updateById(UUID id, PlayerDTO player) {
+    public boolean updateById(UUID id, PlayerDTO player) {
+        if(!nationalityRepository.existsById(player.getNationality().getId())) {
+            return false;
+        }
+
         player.setId(id);
         playerRepository.save(playerMapper.playerDtoToPlayer(player));
+        return true;
     }
 
     @Override
